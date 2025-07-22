@@ -1,0 +1,20 @@
+{
+  "name": "demo-basic",
+  "version": "1.0.0",
+  "description": "Basic Slidev presentation demo",
+  "type": "module",
+  "scripts": {
+    "dev": "slidev --open --port 3030",
+    "build": "slidev build",
+    "export": "slidev export",
+    "preview": "vite preview --port 4173 --base /",
+    "clean": "rm -rf dist"
+  },
+  "dependencies": {
+    "@slidev/cli": "^0.48.0",
+    "@slidev/theme-default": "latest"
+  },
+  "devDependencies": {
+    "playwright-chromium": "^1.40.0"
+  }
+}

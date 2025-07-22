@@ -1,0 +1,182 @@
+name: Deploy Slidev Presentations to GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: latest
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies
+        run: pnpm install
+
+
+      - name: Build all presentations
+        run: pnpm run build:all
+        env:
+          NODE_ENV: production
+
+      - name: Create index page
+        run: |
+          mkdir -p dist
+          cat > dist/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="zh-TW">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Slidev Presentations</title>
+            <style>
+              body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 2rem;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                min-height: 100vh;
+                color: white;
+              }
+              .container {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(10px);
+                border-radius: 20px;
+                padding: 2rem;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+              }
+              h1 {
+                text-align: center;
+                margin-bottom: 2rem;
+                font-size: 2.5rem;
+                font-weight: 300;
+              }
+              .presentations {
+                display: grid;
+                gap: 1.5rem;
+              }
+              .presentation-card {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 1.5rem;
+                text-decoration: none;
+                color: inherit;
+                transition: all 0.3s ease;
+                display: block;
+              }
+              .presentation-card:hover {
+                transform: translateY(-2px);
+                background: rgba(255, 255, 255, 0.2);
+                box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+              }
+              .presentation-title {
+                font-size: 1.5rem;
+                font-weight: 600;
+                margin-bottom: 0.5rem;
+              }
+              .presentation-desc {
+                opacity: 0.8;
+                line-height: 1.6;
+              }
+              .footer {
+                text-align: center;
+                margin-top: 3rem;
+                opacity: 0.7;
+              }
+              .footer a {
+                color: white;
+                text-decoration: none;
+              }
+              .footer a:hover {
+                text-decoration: underline;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>🎯 Slidev Presentations</h1>
+              <div class="presentations">
+                <a href="./presentations/demo-basic/" class="presentation-card">
+                  <div class="presentation-title">📚 基本功能展示</div>
+                  <div class="presentation-desc">展示 Slidev 的核心功能，包括 Markdown 語法、主題、導航等基本特性</div>
+                </a>
+                
+                <a href="./presentations/demo-advanced/" class="presentation-card">
+                  <div class="presentation-title">🚀 進階功能展示</div>
+                  <div class="presentation-desc">探索自定義組件、互動式元素、程式碼執行、動畫效果等進階功能</div>
+                </a>
+              </div>
+              
+              <div class="footer">
+                <p>Powered by <a href="https://sli.dev" target="_blank">Slidev</a> | 
+                <a href="https://github.com/slidevjs/slidev" target="_blank">GitHub</a></p>
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+
+      - name: Add .nojekyll file
+        run: touch dist/.nojekyll
+
+      - name: Copy presentations to dist
+        run: |
+          mkdir -p dist/presentations
+          cp -r presentations/demo-basic/dist dist/presentations/demo-basic
+          cp -r presentations/demo-advanced/dist dist/presentations/demo-advanced
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    environment:
+      name: github-pages
+    needs: build
+    runs-on: ubuntu-latest
+    name: Deploy
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

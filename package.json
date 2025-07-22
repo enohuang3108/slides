@@ -1,0 +1,27 @@
+{
+  "name": "mono-slidev",
+  "version": "1.0.0",
+  "description": "A monorepo for multiple Slidev presentations with GitHub Pages deployment",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "build": "pnpm -r build",
+    "build:all": "pnpm -r run build",
+    "clean": "pnpm -r run clean && rm -rf dist",
+    "lint": "pnpm -r run lint",
+    "preview": "pnpm -r run preview"
+  },
+  "keywords": [
+    "slidev",
+    "presentations",
+    "monorepo",
+    "github-pages"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0"
+}
