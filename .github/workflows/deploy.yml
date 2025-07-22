@@ -50,7 +50,7 @@ jobs:
 
 
       - name: Build all presentations
-        run: pnpm run build:all
+        run: pnpm -r run build
         env:
           NODE_ENV: production
 

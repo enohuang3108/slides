@@ -4,21 +4,10 @@
   "description": "Advanced Slidev presentation demo with custom components",
   "type": "module",
   "scripts": {
-    "dev": "slidev --open --port 3031",
+    "dev": "slidev --open",
     "build": "slidev build",
     "export": "slidev export",
-    "preview": "vite preview --port 4174 --base /",
+    "preview": "vite preview --base /",
     "clean": "rm -rf dist"
-  },
-  "dependencies": {
-    "@slidev/cli": "^0.48.0",
-    "@slidev/theme-seriph": "latest",
-    "@vueuse/core": "^10.0.0",
-    "vue": "^3.3.0"
-  },
-  "devDependencies": {
-    "playwright-chromium": "^1.40.0",
-    "@iconify-json/carbon": "^1.1.0",
-    "@iconify-json/mdi": "^1.1.0"
   }
 }

@@ -87,11 +87,6 @@ mono-slidev/
    pnpm dev
    ```
 
-4. **建置所有演示文稿**
-   ```bash
-   pnpm build:all
-   ```
-
 ## 🎪 現有演示文稿
 
 ### 📚 Demo Basic
@@ -360,7 +355,7 @@ pnpm --filter demo-basic add package-name
 
 ```bash
 # 檢查建置輸出
-pnpm build:all
+pnpm build
 
 # 本地預覽建置結果
 cd presentations/demo-basic

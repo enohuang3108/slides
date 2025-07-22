@@ -22,12 +22,10 @@ export function createSlidevConfig(fallbackRepoName = 'mono-slidev') {
   return {
     // GitHub Pages base path configuration
     routerMode: 'hash',
-    
+
     // Build configuration for GitHub Pages
     build: {
-      base: process.env.NODE_ENV === 'production' 
-        ? `/${repoName}/presentations/${projectName}/` 
-        : '/'
+      base: '/talks/my-cool-talk/'
     }
   }
 }
