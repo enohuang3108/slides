@@ -1,9 +1,9 @@
-name: Deploy Slidev Presentations to GitHub Pages
+name: Deploy Slidev to GitHub Pages
 
 on:
   workflow_dispatch:
   push:
-    branches: [main, master]
+    branches: [main]
 
 permissions:
   contents: read
@@ -49,8 +49,8 @@ jobs:
         run: pnpm install
 
 
-      - name: Build all presentations
-        run: pnpm -r run build
+      - name: Build all
+        run: pnpm run build
         env:
           NODE_ENV: production
 
@@ -133,19 +133,19 @@ jobs:
             <div class="container">
               <h1>🎯 Slidev Presentations</h1>
               <div class="presentations">
-                <a href="./presentations/demo-basic/" class="presentation-card">
+                <a href="./demo/demo-basic/" class="presentation-card">
                   <div class="presentation-title">📚 基本功能展示</div>
                   <div class="presentation-desc">展示 Slidev 的核心功能，包括 Markdown 語法、主題、導航等基本特性</div>
                 </a>
-                
-                <a href="./presentations/demo-advanced/" class="presentation-card">
+
+                <a href="./demo/demo-advanced/" class="presentation-card">
                   <div class="presentation-title">🚀 進階功能展示</div>
                   <div class="presentation-desc">探索自定義組件、互動式元素、程式碼執行、動畫效果等進階功能</div>
                 </a>
               </div>
-              
+
               <div class="footer">
-                <p>Powered by <a href="https://sli.dev" target="_blank">Slidev</a> | 
+                <p>Powered by <a href="https://sli.dev" target="_blank">Slidev</a> |
                 <a href="https://github.com/slidevjs/slidev" target="_blank">GitHub</a></p>
               </div>
             </div>
@@ -155,12 +155,6 @@ jobs:
 
       - name: Add .nojekyll file
         run: touch dist/.nojekyll
-
-      - name: Copy presentations to dist
-        run: |
-          mkdir -p dist/presentations
-          cp -r presentations/demo-basic/dist dist/presentations/demo-basic
-          cp -r presentations/demo-advanced/dist dist/presentations/demo-advanced
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

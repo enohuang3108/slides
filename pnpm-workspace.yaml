@@ -1,2 +1,4 @@
 packages:
-  - 'presentations/*'
+  - 'demo/*'
+  - '202*/*'
+  - '203*/*'
