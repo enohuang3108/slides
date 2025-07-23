@@ -86,6 +86,12 @@ cd 2025
 npx slidev init new-slide
 ```
 
+## Cool Example
+
+- py-intro
+   - [Slidev](https://kareimgazer.github.io/py-intro/)
+   - [Source Code](https://github.com/KareimGazer/py-intro)
+
 ## 🔗 相關連結
 
 - [Slidev 官方文檔](https://sli.dev)
