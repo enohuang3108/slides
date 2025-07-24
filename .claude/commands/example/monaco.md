@@ -4,6 +4,7 @@ print(Hello, World!)
 ```
 
 ## Example 2: maxHeight
+maxHeight 一定要有前面的行數
 ```ts {2|3|7|12}{maxHeight:'100px'}
 print(Hello, World!)
 ```

@@ -5,7 +5,7 @@ transition: slide-left
 colorSchema: light
 layout: section
 fonts:
-  sans: 'Noto Sans TC, Robot'
+  sans: "Noto Sans TC, Robot"
   serif: Roboto Slab
   mono: Fira Code
 ---
@@ -29,19 +29,19 @@ fonts:
 
 ---
 layout: iframe-right
-
 url: https://caniuse.com/?search=ttf
 ---
+
 ## 字體格式
 
 常見的字型格式包含：
 
-| 檔案副檔名 | `format()` 內容 | 壓縮程度 | 不支援的瀏覽器 |
-| --- | --- | --- | --- |
-| `.ttf` | `"truetype"` | 無（或極少） | IE 部分支援 |
-| `.otf` | `"opentype"` | 無（或極少） | IE 部分支援 |
-| `.woff` | `"woff"` | 約 ttf 的 60% | 主流都支援 |
-| `.woff2` | `"woff2"` | 約 ttf 的 40% | IE 不支援 |
+| 檔案副檔名 | `format()` 內容 | 壓縮程度      | 不支援的瀏覽器 |
+| ---------- | --------------- | ------------- | -------------- |
+| `.ttf`     | `"truetype"`    | 無（或極少）  | IE 部分支援    |
+| `.otf`     | `"opentype"`    | 無（或極少）  | IE 部分支援    |
+| `.woff`    | `"woff"`        | 約 ttf 的 60% | 主流都支援     |
+| `.woff2`   | `"woff2"`       | 約 ttf 的 40% | IE 不支援      |
 
 ---
 
@@ -66,7 +66,7 @@ body {
 
 若自訂字體只設定特定字重，瀏覽器會 fallback 到最接近的字重。
 
-```css
+```css {*}{maxHeight:'400px'}
 @font-face {
   font-family: "New-Font";
   font-weight: 400;
@@ -78,13 +78,42 @@ body {
   src: url(./font-bold.ttf);
 }
 
-.text { font-weight: 300; } /* -> 選擇 400 */
-.text { font-weight: 400; } /* -> 選擇 400 */
-.text { font-weight: 500; } /* -> 選擇 400 (瀏覽器偏好向下 fallback) */
-.text { font-weight: 600; } /* -> 選擇 600 */
-.text { font-weight: 700; } /* -> 選擇 600 */
+.text {
+  font-weight: 300;
+} /* -> 選擇 400 */
+.text {
+  font-weight: 400;
+} /* -> 選擇 400 */
+.text {
+  font-weight: 500;
+} /* -> 選擇 400 (瀏覽器偏好向下 fallback) */
+.text {
+  font-weight: 600;
+} /* -> 選擇 600 */
+.text {
+  font-weight: 700;
+} /* -> 選擇 600 */
 ```
 
+---
+layout: two-cols
+---
+
+## 瀏覽器模擬字體樣式
+
+瀏覽器可以模擬粗體、斜體、下上標
+```css
+{
+  font-synthesis: none;
+  font-synthesis: weight;
+  ...
+}
+```
+::right::
+
+<MaxHeightContainer>
+<FontTest/>
+</MaxHeightContainer>
 ---
 
 ## 字型加載：渲染阻塞
@@ -101,6 +130,7 @@ body {
   font-family: "MyWebFont", Arial, sans-serif;
 }
 ```
+
 <br/>
 <br/>
 
@@ -113,7 +143,6 @@ body {
 ### 瀏覽器會延遲加載
 
 如果首頁沒有使用到某個字體（例如中文字型），瀏覽器會等到真正需要時（例如切換到有中文的頁面）才去下載該字型。
-
 
 <img src="/瀏覽器會懶加載.webp" alt="瀏覽器會懶加載" class="m-auto" />
 
@@ -133,6 +162,7 @@ p {
   font-synthesis: none;
 }
 ```
+
 <div class="pt-40 text-xs">
 <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" target="_blank">MDN: font-synthesis</a>
 </div>
@@ -141,19 +171,48 @@ p {
 
 ## 提前下載字體
 
-當我們為 Regular 和 Bold 分別提供字體檔案時：
+當我們為 Regular 和 Bold 分別提供字體檔案時，可以利用 `preload` 提前下載：
 
 ```html
 <head>
-  <link rel="preload" href="/src/fonts/Inter-Bold.ttf" as="font" type="font/ttf" />
-  <link rel="preload" href="/src/fonts/Inter-Regular.ttf" as="font" type="font/ttf" />
+  <link
+    rel="preload"
+    href="/src/fonts/Inter-Bold.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="/src/fonts/Inter-Regular.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin
+  />
 </head>
 ```
-
+<div class="pt-2 text-xs">
+<line-md-alert-square-loop /> <span>雖然是同源檔案但還是要加 <code>crossorigin</code>。<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload#cors-enabled_fetches" target="_blank">MDN Web</a></span>
+</div>
 
 ---
-layout: two-cols
+
+## 提前下載字體
+### 沒有 preload
+
+<img src="/異步下載fonts2.PNG" alt="瀏覽器會懶加載" class="m-auto" />
+
 ---
+
+## 提前下載字體
+### 有 preload
+
+<img src="/同時下載fonts.PNG" alt="瀏覽器會懶加載" class="m-auto" />
+
+---
+
+
+## layout: two-cols
 
 ## 使用 `woff2` 優化
 
@@ -161,9 +220,9 @@ layout: two-cols
 
 **壓縮後檔案大小比較：**
 
-| font | ttf | woff2 |
-| --- | --- | --- |
-| Inter-VariableFont (英) | 800 kB | 300 kB |
+| font                    | ttf     | woff2   |
+| ----------------------- | ------- | ------- |
+| Inter-VariableFont (英) | 800 kB  | 300 kB  |
 | NotoSansTC-Regular (中) | 6900 kB | 2800 kB |
 
 <div class="pt-4 text-xs">
@@ -183,8 +242,7 @@ layout: two-cols
   src:
     /* 優先使用 woff2 */
     url(./fonts/Inter.woff2) format("woff2"),
-    /* 若不支援則使用 ttf */
-    url(./fonts/Inter.ttf) format("truetype");
+    /* 若不支援則使用 ttf */ url(./fonts/Inter.ttf) format("truetype");
 }
 ```
 
