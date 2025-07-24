@@ -88,9 +88,11 @@ npx slidev init new-slide
 
 ## Cool Example
 
+- Slidev
+  - [Demo](https://github.com/slidevjs/slidev/tree/016adce171d2b8b36ca461f81ddbdf091be0f3fc/demo)
 - py-intro
-   - [Slidev](https://kareimgazer.github.io/py-intro/)
-   - [Source Code](https://github.com/KareimGazer/py-intro)
+  - [Slidev](https://kareimgazer.github.io/py-intro/)
+  - [Source Code](https://github.com/KareimGazer/py-intro)
 
 ## 🔗 相關連結
 
