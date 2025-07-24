@@ -21,6 +21,26 @@ transition: slide-left
 </div>
 
 ---
+layout: iframe-right
+
+# the web page source
+url: https://caniuse.com/ttf
+
+# a custom class name to the content
+class: my-cool-content-on-the-left
+---
+layout: two-cols
+
+# Left
+
+This shows on the left
+
+::right::
+
+# Right
+
+This shows on the right
+---
 
 # 什麼是 Slidev？
 
@@ -56,7 +76,7 @@ transition: slide-left
 使用 Markdown 語法格式化文字：
 
 - **粗體文字**
-- *斜體文字*  
+- *斜體文字*
 - `程式碼`
 - [連結](https://sli.dev)
 
