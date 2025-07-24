@@ -5,8 +5,5 @@
     "build": "slidev build --base /mono-slidev/demo/demo-basic/ --out ../../dist/demo/demo-basic",
     "export": "slidev export --per-slide --output demo-basic.pdf",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "@slidev/theme-apple-basic": "^0.25.1"
   }
 }
