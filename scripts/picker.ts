@@ -1,7 +1,6 @@
 import { execa } from "execa";
 import fs from "node:fs/promises";
 import process from "node:process";
-import { fileURLToPath } from "node:url";
 import prompts from "prompts";
 
 async function startPicker(args: string[]) {
@@ -28,29 +27,21 @@ async function startPicker(args: string[]) {
     allProjects.push(...projects);
   }
 
-  const result = args.includes("-y")
-    ? { project: allProjects[0] }
-    : await prompts([
-        {
-          type: "select",
-          name: "project",
-          message: "Pick a project",
-          choices: allProjects.map((project) => ({
-            title: project.title,
-            value: project,
-          })),
-        },
-      ]);
+  const result = await prompts([
+    {
+      type: "select",
+      name: "project",
+      message: "Pick a project",
+      choices: allProjects.map((project) => ({
+        title: project.title,
+        value: project,
+      })),
+    },
+  ]);
 
   args = args.filter((arg) => arg !== "-y");
 
   if (result.project) {
-    if (args[0] === "dev")
-      execa("code", [
-        fileURLToPath(
-          new URL(`../${result.project.path}/slides.md`, import.meta.url)
-        ),
-      ]);
     await execa("pnpm", ["run", ...args], {
       cwd: new URL(`../${result.project.path}`, import.meta.url),
       stdio: "inherit",
