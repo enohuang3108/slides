@@ -144,7 +144,7 @@ body {
 
 如果首頁沒有使用到某個字體（例如中文字型），瀏覽器會等到真正需要時（例如切換到有中文的頁面）才去下載該字型。
 
-<img src="/瀏覽器會懶加載.webp" alt="瀏覽器會懶加載" class="m-auto" />
+<img src="/browser-lazy-load.webp" class="m-auto" />
 
 ---
 
@@ -200,14 +200,14 @@ p {
 ## 提前下載字體
 ### 沒有 preload
 
-<img src="/異步下載fonts2.PNG" alt="瀏覽器會懶加載" class="m-auto" />
+<img src="/download-fonts-not-same-time.png" class="m-auto" />
 
 ---
 
 ## 提前下載字體
 ### 有 preload
 
-<img src="/同時下載fonts.PNG" alt="瀏覽器會懶加載" class="m-auto" />
+<img src="/download-fonts-same-time.png" class="m-auto" />
 
 ---
 
@@ -246,4 +246,4 @@ p {
 }
 ```
 
-<img src="/使用woff2優化.webp" alt="使用woff2優化" class="m-auto" />
+<img src="/use-woff2.webp" class="m-auto" />
