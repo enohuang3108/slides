@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "slidev --open",
-    "build": "slidev build --base /mono-slidev/demo/demo-basic/ --out ../../dist/demo/demo-basic",
+    "build": "slidev build --base /slides/2025/font-settings-and-optimization/ --out ../../dist/2025/font-settings-and-optimization",
     "export": "slidev export --per-slide --output demo-basic.pdf",
     "preview": "vite preview"
   }

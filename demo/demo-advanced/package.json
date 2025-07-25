@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "dev": "slidev --open",
-    "build": "slidev build --base /mono-slidev/demo/demo-advanced/ --out ../../dist/demo/demo-advanced",
+    "build": "slidev build --base /slides/demo/demo-advanced/ --out ../../dist/demo/demo-advanced",
     "export": "slidev export --per-slide --output demo-advanced.pdf",
     "preview": "vite preview"
   }
