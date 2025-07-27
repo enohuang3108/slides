@@ -14,7 +14,12 @@ fonts:
 
 ---
 
-## 字體小知識
+# 字型設置與優化
+<Toc minDepth="1"/>
+
+---
+
+# 字體小知識
 
 - 一般來說字型會使用 Regular、Bold 兩種字重。
 - 有些字體是 **Variable Font**，本身支援多種字重。
@@ -32,20 +37,20 @@ layout: iframe-right
 url: https://caniuse.com/?search=ttf
 ---
 
-## 字體格式
+# 字體格式
 
 常見的字型格式包含：
 
-| 檔案副檔名 | `format()` 內容 | 壓縮程度      | 不支援的瀏覽器 |
-| ---------- | --------------- | ------------- | -------------- |
-| `.ttf`     | `"truetype"`    | 無（或極少）  | IE 部分支援    |
-| `.otf`     | `"opentype"`    | 無（或極少）  | IE 部分支援    |
-| `.woff`    | `"woff"`        | 約 ttf 的 60% | 主流都支援     |
-| `.woff2`   | `"woff2"`       | 約 ttf 的 40% | IE 不支援      |
+| 檔案副檔名 |  壓縮程度      | 不支援的瀏覽器 |
+| ----------  | ------------- | -------------- |
+| `.ttf`      | 無（或極少）  | IE 部分支援    |
+| `.otf`      | 無（或極少）  | IE 部分支援    |
+| `.woff`     | 約 ttf 的 60% | 主流都支援     |
+| `.woff2`    | 約 ttf 的 40% | IE 不支援      |
 
 ---
 
-## 用 `@font-face` 自訂字體
+# 自訂字體
 
 使用 `@font-face` 可以在 CSS 中定義自己的字體。
 
@@ -62,7 +67,7 @@ body {
 
 ---
 
-## 設定字重
+# 設定字重
 
 若自訂字體只設定特定字重，瀏覽器會 fallback 到最接近的字重。
 
@@ -99,16 +104,18 @@ body {
 layout: two-cols
 ---
 
-## 瀏覽器模擬字體樣式
-
+# 瀏覽器會模擬字體樣式
 瀏覽器可以模擬粗體、斜體、下上標
 ```css
 {
-  font-synthesis: none;
-  font-synthesis: weight;
+  font-synthesis: none; /* 禁止模擬 */
+  font-synthesis: weight; /* 模擬字重 */
   ...
 }
 ```
+<div class="absolute bottom-0 text-xs">
+<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" target="_blank">MDN: font-synthesis</a>
+</div>
 ::right::
 
 <MaxHeightContainer>
@@ -116,13 +123,12 @@ layout: two-cols
 </MaxHeightContainer>
 ---
 
-## 字型加載：渲染阻塞
-
-### 字型下載會阻塞畫面渲染
+# 字型加載：渲染阻塞
+字型下載會阻塞畫面渲染
 
 若 CSS 中設定的 `font-family` 是使用者電腦沒有的字體，瀏覽器需要先下載它，這會造成**渲染阻塞** (Render Blocking)，頁面會呈現空白，直到字體下載完成。
 
-<span v-mark="{ color: 'yellow', type: 'highlight' }">所以主要字體的檔案不能太大</span>
+<span v-mark="{ color: 'orange' }">所以主要字體的檔案不能太大</span>
 
 ```css
 /* MyWebFont 不是內建字體，會觸發下載並阻塞渲染 */
@@ -138,7 +144,7 @@ body {
 
 ---
 
-## 字型加載：懶加載
+# 字型加載：懶加載
 
 ### 瀏覽器會延遲加載
 
@@ -146,30 +152,10 @@ body {
 
 <img src="/browser-lazy-load.webp" class="m-auto" />
 
----
-
-## 網頁上的「偽粗體」
-
-### 我沒有提供粗體，但網頁可以顯示？
-
-這是因為瀏覽器會自動模擬缺少的樣式，例如粗體和斜體。
-
-可以透過 `font-synthesis` 來禁止瀏覽器這個行為：
-
-```css
-/* 禁止瀏覽器自動合成粗體或斜體 */
-p {
-  font-synthesis: none;
-}
-```
-
-<div class="pt-40 text-xs">
-<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" target="_blank">MDN: font-synthesis</a>
-</div>
 
 ---
 
-## 提前下載字體
+# 提前下載字體
 
 當我們為 Regular 和 Bold 分別提供字體檔案時，可以利用 `preload` 提前下載：
 
@@ -197,24 +183,23 @@ p {
 
 ---
 
-## 提前下載字體
+# 提前下載字體
 ### 沒有 preload
 
 <img src="/download-fonts-not-same-time.png" class="m-auto" />
 
 ---
 
-## 提前下載字體
+# 提前下載字體
 ### 有 preload
 
 <img src="/download-fonts-same-time.png" class="m-auto" />
 
 ---
+layout: two-cols
+---
 
-
-## layout: two-cols
-
-## 使用 `woff2` 優化
+# 使用 `woff2` 優化
 
 `ttf` 格式的字體檔案通常較大，可以使用 Google 的 `woff2` 工具進行壓縮，大幅減少檔案大小。
 
@@ -242,7 +227,8 @@ p {
   src:
     /* 優先使用 woff2 */
     url(./fonts/Inter.woff2) format("woff2"),
-    /* 若不支援則使用 ttf */ url(./fonts/Inter.ttf) format("truetype");
+    /* 若不支援則使用 ttf */
+    url(./fonts/Inter.ttf) format("truetype");
 }
 ```
 

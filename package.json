@@ -8,11 +8,9 @@
     "preview": "pnpm -r run preview"
   },
   "devDependencies": {
-    "@iconify-json/carbon": "^1.2.11",
-    "@iconify-json/mdi": "^1.1.0",
+    "@iconify-json/carbon": "^1.1.0",
     "@iconify-json/line-md": "^1.2.8",
     "@slidev/cli": "^0.48.9",
-    "@slidev/theme-apple-basic": "^0.25.1",
     "@slidev/theme-apple-basic": "^0.25.1",
     "@slidev/theme-default": "^0.25.0",
     "@slidev/theme-seriph": "latest",
