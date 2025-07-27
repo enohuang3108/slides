@@ -14,16 +14,23 @@ fonts:
 
 ---
 
-# 字型設置與優化
-<Toc minDepth="1"/>
+# Agenda
+<!-- <Toc minDepth="2" /> -->
+- 字型的設置與優化
+- 從瀏覽器關鍵渲染路徑看字型加載
+---
+layout: center
+---
+
+# 字型的設置與優化
 
 ---
 
-# 字體小知識
+## 字型小知識
 
 - 一般來說字型會使用 Regular、Bold 兩種字重。
-- 有些字體是 **Variable Font**，本身支援多種字重。
-  - 但 Variable Font 檔案本身較大，需評估使用它還是直接用特定的 Regular、Bold 字體。
+- 有些字型是 **Variable Font**，本身支援多種字重。
+  - 但 Variable Font 檔案本身較大，需評估使用它還是直接用特定的 Regular、Bold 字型。
   - Google Fonts 會特別標示 Variable Font。
 
 <br/>
@@ -32,27 +39,12 @@ fonts:
 
 <img src="/VariableFont.webp" alt="Variable Font Example" class="m-auto" />
 
----
-layout: iframe-right
-url: https://caniuse.com/?search=ttf
----
-
-# 字體格式
-
-常見的字型格式包含：
-
-| 檔案副檔名 |  壓縮程度      | 不支援的瀏覽器 |
-| ----------  | ------------- | -------------- |
-| `.ttf`      | 無（或極少）  | IE 部分支援    |
-| `.otf`      | 無（或極少）  | IE 部分支援    |
-| `.woff`     | 約 ttf 的 60% | 主流都支援     |
-| `.woff2`    | 約 ttf 的 40% | IE 不支援      |
 
 ---
 
-# 自訂字體
+# 自訂字型
 
-使用 `@font-face` 可以在 CSS 中定義自己的字體。
+使用 `@font-face` 可以在 CSS 中定義自己的字型。
 
 ```css
 @font-face {
@@ -69,7 +61,7 @@ body {
 
 # 設定字重
 
-若自訂字體只設定特定字重，瀏覽器會 fallback 到最接近的字重。
+若自訂字型只設定特定字重，瀏覽器會 fallback 到最接近的字重。
 
 ```css {*}{maxHeight:'400px'}
 @font-face {
@@ -104,7 +96,7 @@ body {
 layout: two-cols
 ---
 
-# 瀏覽器會模擬字體樣式
+# 瀏覽器會模擬字型樣式
 瀏覽器可以模擬粗體、斜體、下上標
 ```css
 {
@@ -122,78 +114,21 @@ layout: two-cols
 <FontTest/>
 </MaxHeightContainer>
 ---
-
-# 字型加載：渲染阻塞
-字型下載會阻塞畫面渲染
-
-若 CSS 中設定的 `font-family` 是使用者電腦沒有的字體，瀏覽器需要先下載它，這會造成**渲染阻塞** (Render Blocking)，頁面會呈現空白，直到字體下載完成。
-
-<span v-mark="{ color: 'orange' }">所以主要字體的檔案不能太大</span>
-
-```css
-/* MyWebFont 不是內建字體，會觸發下載並阻塞渲染 */
-body {
-  font-family: "MyWebFont", Arial, sans-serif;
-}
-```
-
-<br/>
-<br/>
-
-<line-md-alert-square-loop /> <span>使用 `font-display: swap` 可以先顯示備用字體，但會造成 FOUT (Flash of Unstyled Text) 字體閃爍問題。</span>
-
+layout: iframe-right
+url: https://caniuse.com/?search=ttf
 ---
 
-# 字型加載：懶加載
+# 字型格式
 
-### 瀏覽器會延遲加載
+常見的字型格式包含：
 
-如果首頁沒有使用到某個字體（例如中文字型），瀏覽器會等到真正需要時（例如切換到有中文的頁面）才去下載該字型。
+| 檔案副檔名 |  壓縮程度      | 不支援的瀏覽器 |
+| ----------  | ------------- | -------------- |
+| `.ttf`      | 無（或極少）  | IE 部分支援    |
+| `.otf`      | 無（或極少）  | IE 部分支援    |
+| `.woff`     | 約 ttf 的 60% | 主流都支援     |
+| `.woff2`    | 約 ttf 的 40% | IE 不支援      |
 
-<img src="/browser-lazy-load.webp" class="m-auto" />
-
-
----
-
-# 提前下載字體
-
-當我們為 Regular 和 Bold 分別提供字體檔案時，可以利用 `preload` 提前下載：
-
-```html
-<head>
-  <link
-    rel="preload"
-    href="/src/fonts/Inter-Bold.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin
-  />
-  <link
-    rel="preload"
-    href="/src/fonts/Inter-Regular.ttf"
-    as="font"
-    type="font/ttf"
-    crossorigin
-  />
-</head>
-```
-<div class="pt-2 text-xs">
-<line-md-alert-square-loop /> <span>雖然是同源檔案但還是要加 <code>crossorigin</code>。<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload#cors-enabled_fetches" target="_blank">MDN Web</a></span>
-</div>
-
----
-
-# 提前下載字體
-### 沒有 preload
-
-<img src="/download-fonts-not-same-time.png" class="m-auto" />
-
----
-
-# 提前下載字體
-### 有 preload
-
-<img src="/download-fonts-same-time.png" class="m-auto" />
 
 ---
 layout: two-cols
@@ -201,7 +136,7 @@ layout: two-cols
 
 # 使用 `woff2` 優化
 
-`ttf` 格式的字體檔案通常較大，可以使用 Google 的 `woff2` 工具進行壓縮，大幅減少檔案大小。
+`ttf` 格式的字型檔案通常較大，可以使用 Google 的 `woff2` 工具進行壓縮，大幅減少檔案大小。
 
 **壓縮後檔案大小比較：**
 
@@ -233,3 +168,81 @@ layout: two-cols
 ```
 
 <img src="/use-woff2.webp" class="m-auto" />
+
+---
+layout: center
+---
+
+# 從瀏覽器關鍵渲染路徑看字型加載
+
+---
+
+# 1. 主要字型的檔案不能太大
+### 字型下載會阻塞畫面渲染
+
+若 CSS 中設定的 `font-family` 是使用者電腦沒有的字型，瀏覽器需要先下載它，這會造成**渲染阻塞** (Render Blocking)，頁面會呈現空白，直到字型下載完成。
+
+```css
+/* MyWebFont 不是內建字型，會觸發下載並阻塞渲染 */
+body {
+  font-family: "MyWebFont", Arial, sans-serif;
+}
+```
+
+<br/>
+<br/>
+
+<line-md-alert-square-loop /> <span>使用 `font-display: swap` 可以先顯示備用字型，但會造成 FOUT (Flash of Unstyled Text) 字型閃爍問題。</span>
+
+---
+
+# 2. 暫未使用的字型檔不會影響效能
+
+### 瀏覽器會延遲加載
+
+如果首頁沒有使用到某個字型（例如中文字型），瀏覽器會等到真正需要時（例如切換到有中文的頁面）才去下載該字型(懶加載)。
+
+<img src="/browser-lazy-load.webp" class="m-auto" />
+
+
+---
+
+# 3. 提前下載字型
+
+當我們為 Regular 和 Bold 分別提供字型檔案時，可以利用 `preload` 提前下載：
+
+```html
+<head>
+  <link
+    rel="preload"
+    href="/src/fonts/Inter-Bold.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin
+  />
+  <link
+    rel="preload"
+    href="/src/fonts/Inter-Regular.ttf"
+    as="font"
+    type="font/ttf"
+    crossorigin
+  />
+</head>
+```
+<div class="pt-2 text-xs">
+<line-md-alert-square-loop /> <span>雖然是同源檔案但還是要加 <code>crossorigin</code>。<a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Attributes/rel/preload#cors-enabled_fetches" target="_blank">MDN Web</a></span>
+</div>
+
+---
+
+# 3. 提前下載字型
+### 沒有 preload
+
+<img src="/download-fonts-not-same-time.png" class="m-auto" />
+
+---
+
+# 3. 提前下載字型
+### 有 preload
+
+<img src="/download-fonts-same-time.png" class="m-auto" />
