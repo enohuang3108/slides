@@ -3,6 +3,7 @@ theme: apple-basic
 title: 字型設置與優化
 transition: slide-left
 colorSchema: light
+routerMode: hash
 layout: section
 fonts:
   sans: "Noto Sans TC, Robot"
@@ -18,6 +19,7 @@ fonts:
 <!-- <Toc minDepth="2" /> -->
 - 字型的設置與優化
 - 從瀏覽器關鍵渲染路徑看字型加載
+
 ---
 layout: center
 ---
@@ -26,7 +28,7 @@ layout: center
 
 ---
 
-## 字型小知識
+# 字型小知識
 
 - 一般來說字型會使用 Regular、Bold 兩種字重。
 - 有些字型是 **Variable Font**，本身支援多種字重。
@@ -38,7 +40,6 @@ layout: center
 <br/>
 
 <img src="/VariableFont.webp" alt="Variable Font Example" class="m-auto" />
-
 
 ---
 
@@ -56,6 +57,23 @@ body {
   font-family: "MyWebFont", sans-serif;
 }
 ```
+
+通常 Google Font 上會叫你這樣設定：
+```html
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap" rel="stylesheet">
+
+// or
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100..900&display=swap');
+</style>
+```
+
+<!--
+google 連結 的 css 其實就是 font-face 的設定
+-->
 
 ---
 
@@ -105,9 +123,10 @@ layout: two-cols
   ...
 }
 ```
-<div class="absolute bottom-0 text-xs">
-<a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" target="_blank">MDN: font-synthesis</a>
-</div>
+
+<Footnotes x='l'>
+  <Footnote :number=1><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" rel="noreferrer" target="_blank">MDN: font-synthesis</a></Footnote>
+</Footnotes>
 ::right::
 
 <MaxHeightContainer>
@@ -145,10 +164,10 @@ layout: two-cols
 | Inter-VariableFont (英) | 800 kB  | 300 kB  |
 | NotoSansTC-Regular (中) | 6900 kB | 2800 kB |
 
-<div class="pt-4 text-xs">
-<p>工具參考:</p>
-<p><a href="https://github.com/google/woff2" target="_blank">google/woff2</a></p>
-</div>
+
+<Footnotes separator x=l>
+  <Footnote :number=1><a href="https://github.com/google/woff2" rel="noreferrer" target="_blank">google/woff2</a></Footnote>
+</Footnotes>
 
 ::right::
 
