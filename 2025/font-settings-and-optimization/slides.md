@@ -3,6 +3,7 @@ theme: apple-basic
 title: 字型設置與優化
 transition: slide-left
 colorSchema: light
+routerMode: hash
 layout: section
 fonts:
   sans: "Noto Sans TC, Robot"
