@@ -3,3 +3,6 @@
 .slidev-layout.section h1 {
   font-weight: 900;
 }
+.slidev-page {
+  height: 100%;
+}
