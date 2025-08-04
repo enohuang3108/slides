@@ -2,4 +2,3 @@ packages:
   - 'demo/*'
   - '202*/*'
   - '203*/*'
-  - 'slide-index'

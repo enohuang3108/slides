@@ -7,8 +7,6 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "module": "ESNext",
-    "moduleResolution": "bundler"
+    }
   }
 }
