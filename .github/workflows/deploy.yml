@@ -49,21 +49,16 @@ jobs:
         run: pnpm install
 
 
-      - name: Build all slides
+      - name: Build all
         run: pnpm run build
         env:
           NODE_ENV: production
 
-      - name: Build slide index
-        run: |
-          cd slide-index
-          pnpm install
-          pnpm run build
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Copy slide index to dist
-        run: |
-          mkdir -p dist
-          cp -r slide-index/dist/* dist/
+      - name: Create index page
+        run: bash scripts/create-index.sh
 
       - name: Add .nojekyll file
         run: touch dist/.nojekyll
