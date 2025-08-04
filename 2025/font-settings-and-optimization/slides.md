@@ -18,12 +18,9 @@ fonts:
 ---
 
 # Agenda
-<!-- <Toc minDepth="2" /> -->
 - 字型的設置與優化
 - 從瀏覽器關鍵渲染路徑看字型加載
-<Footnotes x='l'>
-  <Footnote :number=1><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/font-synthesis" rel="noreferrer" target="_blank">MDN: font-synthesis</a></Footnote>
-</Footnotes>
+
 ---
 layout: center
 ---
