@@ -97,7 +97,7 @@ cat > dist/index.html << 'EOF'
   <div class="container">
     <h1>Slides</h1>
     <div class="search-container">
-      <input type="text" class="search-input" placeholder="搜尋簡報標題或日期..." id="searchInput">
+      <input type="text" class="search-input" placeholder="搜尋簡報標題或年分..." id="searchInput">
     </div>
     <div class="presentations">
 EOF
@@ -109,6 +109,7 @@ find . -path '*/node_modules/*' -prune -o -name slides.md -print | sort | while 
 
   # 從 slides.md 的 frontmatter 提取 title
   title=$(grep '^title:' "${slides_md}" | head -n 1 | sed 's/^title: *//;s/"//g')
+  info=$(grep '^info:' "${slides_md}" | head -n 1 | sed 's/^info: *//;s/"//g')
 
 
   # 如果沒有 title，使用目錄名作為備用
@@ -116,21 +117,11 @@ find . -path '*/node_modules/*' -prune -o -name slides.md -print | sort | while 
     title=$(basename "$dir_path")
   fi
 
-  # 根據目錄名添加 emoji
-  emoji="📚"
-  if [[ "$dir_path" == *"advanced"* ]]; then
-    emoji="🚀"
-  elif [[ "$dir_path" == *"demo"* ]]; then
-    emoji="🧪"
-  elif [[ "$dir_path" == *"2025"* ]]; then
-    emoji="🗓️"
-  fi
-
   # 將生成的卡片附加到 index.html
   cat >> dist/index.html << EOF
       <a href="./${dir_path}/" class="presentation-card">
-        <div class="presentation-title">${emoji} ${title}</div>
-        <div class="presentation-desc">${dir_path}</div>
+        <div class="presentation-title">${title}</div>
+        <div class="presentation-desc">${info}</div>
       </a>
 EOF
 done
@@ -139,19 +130,19 @@ done
 cat >> dist/index.html << 'EOF'
     </div>
   </div>
-  
+
   <script>
     const searchInput = document.getElementById('searchInput');
     const cards = document.querySelectorAll('.presentation-card');
-    
+
     searchInput.addEventListener('input', function() {
       const searchTerm = this.value.toLowerCase().trim();
-      
+
       cards.forEach(card => {
         const title = card.querySelector('.presentation-title').textContent.toLowerCase();
         const desc = card.querySelector('.presentation-desc').textContent.toLowerCase();
         const searchText = title + ' ' + desc;
-        
+
         if (searchTerm === '' || searchText.includes(searchTerm)) {
           card.classList.remove('hidden');
         } else {

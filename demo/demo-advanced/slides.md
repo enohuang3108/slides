@@ -2,9 +2,7 @@
 theme: seriph
 background: https://source.unsplash.com/1920x1080/?technology,programming
 title: Slidev 進階功能完全指南
-info: |
-  ## Slidev 進階功能演示
-  展示自定義組件、互動式元素、動畫、程式碼執行、拖拽、繪圖等進階功能
+info: Slidev 進階功能演示
 class: text-center
 drawings:
   persist: true

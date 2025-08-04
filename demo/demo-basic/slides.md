@@ -1,9 +1,7 @@
 ---
 theme: default
 title: Slidev 入門教學
-info: |
-  ## Slidev 基礎入門
-  適合初學者的 Slidev 基本功能介紹
+info: Slidev 基本功能介紹
 class: text-center
 drawings:
   persist: false

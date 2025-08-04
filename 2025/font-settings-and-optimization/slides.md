@@ -1,6 +1,7 @@
 ---
 theme: apple-basic
 title: 字型設置與優化
+info : 字型設置、格式選擇、壓縮優化與瀏覽器加載機制
 transition: slide-left
 colorSchema: light
 routerMode: hash
