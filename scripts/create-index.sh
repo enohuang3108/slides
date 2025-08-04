@@ -107,21 +107,37 @@ find . -path '*/node_modules/*' -prune -o -name slides.md -print | sort | while 
   dir=$(dirname "${slides_md}")
   dir_path=${dir#./}
 
-  # 從 slides.md 的 frontmatter 提取 title
+  # 從 slides.md 的 frontmatter 提取 title, info, year
   title=$(grep '^title:' "${slides_md}" | head -n 1 | sed 's/^title: *//;s/"//g')
   info=$(grep '^info:' "${slides_md}" | head -n 1 | sed 's/^info: *//;s/"//g')
-
+  year=$(echo "$dir_path" | grep -o '20[0-9][0-9]' | head -n 1)
 
   # 如果沒有 title，使用目錄名作為備用
   if [ -z "$title" ]; then
     title=$(basename "$dir_path")
   fi
 
+  # 建構描述文字
+  desc_parts=""
+  if [ -n "$year" ]; then
+    desc_parts="[$year]"
+  fi
+  if [ -n "$info" ]; then
+    if [ -n "$desc_parts" ]; then
+      desc_parts="$desc_parts $info"
+    else
+      desc_parts="$info"
+    fi
+  fi
+  if [ -z "$desc_parts" ]; then
+    desc_parts="$dir_path"
+  fi
+
   # 將生成的卡片附加到 index.html
   cat >> dist/index.html << EOF
       <a href="./${dir_path}/" class="presentation-card">
         <div class="presentation-title">${title}</div>
-        <div class="presentation-desc">${info}</div>
+        <div class="presentation-desc">${desc_parts}</div>
       </a>
 EOF
 done
