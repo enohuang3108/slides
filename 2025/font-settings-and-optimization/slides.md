@@ -6,9 +6,10 @@ colorSchema: light
 routerMode: hash
 layout: section
 fonts:
-  sans: "Noto Sans TC, Robot"
+  sans: "LINESeedTW, Noto Sans TC, Robot"
   serif: Roboto Slab
   mono: Fira Code
+  local: LINESeedTW
 ---
 
 # 字型設置與優化
