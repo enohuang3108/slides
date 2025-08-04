@@ -8,6 +8,8 @@ class: text-center
 drawings:
   persist: false
 transition: slide-left
+fonts:
+  local: LINESeedTW
 ---
 
 # Slidev 入門教學

@@ -17,6 +17,8 @@ contextMenu: true
 twoslash: true
 highlighter: shiki
 draggable: true
+fonts:
+  local: LINESeedTW
 ---
 
 # Slidev 進階功能完全指南
