@@ -12,65 +12,94 @@ cat > dist/index.html << 'EOF'
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Slides</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      max-width: 800px;
+      background: #f8fafc;
+      color: #1e293b;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1000px;
       margin: 0 auto;
-      padding: 2rem;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      min-height: 100vh;
-      color: white;
+      padding: 3rem 2rem;
     }
     h1 {
-      text-align: center;
-      margin-bottom: 2rem;
       font-size: 2.5rem;
-      font-weight: 300;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 3rem;
+      color: #0f172a;
     }
     .presentations {
       display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
     }
     .presentation-card {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
       padding: 1.5rem;
       text-decoration: none;
       color: inherit;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
       display: block;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
     .presentation-card:hover {
-      transform: translateY(-2px);
-      background: rgba(255, 255, 255, 0.2);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+      transform: translateY(-1px);
+      border-color: #3b82f6;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
     .presentation-title {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 600;
       margin-bottom: 0.5rem;
+      color: #0f172a;
     }
     .presentation-desc {
-      opacity: 0.8;
-      line-height: 1.6;
+      color: #64748b;
+      font-size: 0.875rem;
     }
-    .footer {
+    .search-container {
+      margin-bottom: 2rem;
       text-align: center;
-      margin-top: 3rem;
-      opacity: 0.7;
     }
-    .footer a {
-      color: white;
-      text-decoration: none;
+    .search-input {
+      width: 100%;
+      max-width: 400px;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 1rem;
+      background: white;
+      transition: border-color 0.2s ease;
     }
-    .footer a:hover {
-      text-decoration: underline;
+    .search-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+    .search-input::placeholder {
+      color: #94a3b8;
+    }
+    .presentation-card.hidden {
+      display: none;
     }
   </style>
 </head>
 <body>
-  <div class="presentations">
+  <div class="container">
+    <h1>Slides</h1>
+    <div class="search-container">
+      <input type="text" class="search-input" placeholder="搜尋簡報標題或日期..." id="searchInput">
+    </div>
+    <div class="presentations">
 EOF
 
 # 尋找所有 slides.md，排除 node_modules，並動態生成卡片
@@ -101,14 +130,36 @@ find . -path '*/node_modules/*' -prune -o -name slides.md -print | sort | while 
   cat >> dist/index.html << EOF
       <a href="./${dir_path}/" class="presentation-card">
         <div class="presentation-title">${emoji} ${title}</div>
-        <div class="presentation-desc">${description}</div>
+        <div class="presentation-desc">${dir_path}</div>
       </a>
 EOF
 done
 
 # 寫入 HTML 模板的結尾部分
 cat >> dist/index.html << 'EOF'
+    </div>
   </div>
+  
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.presentation-card');
+    
+    searchInput.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase().trim();
+      
+      cards.forEach(card => {
+        const title = card.querySelector('.presentation-title').textContent.toLowerCase();
+        const desc = card.querySelector('.presentation-desc').textContent.toLowerCase();
+        const searchText = title + ' ' + desc;
+        
+        if (searchTerm === '' || searchText.includes(searchTerm)) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  </script>
 </body>
 </html>
 EOF
