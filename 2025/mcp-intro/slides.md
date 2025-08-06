@@ -1,291 +1,302 @@
 ---
+title: Introducing MCP
 theme: apple-basic
-title: MCP 介紹
-info: ""
+info: |
+  ## Introducing MCP
+  Model Context Protocol 介紹簡報
+
+  了解 AI Agent 如何透過標準化協議與工具互動
+lineNumbers: true
 transition: slide-left
 colorSchema: light
 routerMode: hash
 layout: section
 fonts:
-  sans: "LINESeedTW, Noto Sans TC, Robot"
-  mono: Fira Code
-  local: LINESeedTW
+  sans: 'LINESeedTW, Noto Sans TC, Roboto'
+  mono: 'Fira Code'
+  local: ['LINESeedTW']
 ---
 
-# MCP 介紹
+# Introducing MCP
+## Model Context Protocol
 
----
+標準化的 AI 工具協議
 
-# Agenda
-- What is Agent
-- MCP 簡介
-- MCP 架構
-- MCP 實作範例
-- 總結與展望
 
 ---
 
-# AI Agent
+# AI Agent 是什麼？
 
-- AI 如果需要與外部世界有接觸就必須透過工具
-- Agent 定義: 可以根據目標指令，決定步驟、不斷呼叫工具，直到完成任務
+<br/>
 
-<img src="/ai-agent.webp" class="w-80 mx-auto" />
+**AI Agent** = LLM + 工具 + 自主決策
 
----
+- AI 需要透過**工具**與外部世界互動（資料庫、網路等）
+- LLM 會根據當前狀態**自主決定**流程與使用的工具
+- **持續循環**直到完成任務
 
-# AI Agent 的挑戰
 
-<div class="grid grid-cols-2 gap-8">
-<div>
+<!--
+這邊引用 Anthropic 的定義：LLM 會根據當前狀態自主決定流程與使用的工具，持續循環直到完成任務，這樣的系統稱為 Agent。
 
-## 傳統做法
-- 每個工具都需要獨立整合
-- 重複的安全性驗證
-- 不同的資料格式
-- 維護成本高
-
-</div>
-<div>
-
-## 期望的解決方案
-- 標準化的協定
-- 統一的安全性管理
-- 一致的資料格式
-- 易於擴展
-
-</div>
-</div>
-
----
-
-# MCP (Model Context Protocol)
-
-## 什麼是 MCP？
-- Anthropic 開發的開放標準
-- 讓 AI 模型安全地連接到外部資源
-- 標準化的客戶端-伺服器架構
-- 支援多種工具和資源類型
+為了讓不同的 AI 能夠使用不同的工具，甚至能夠使用第三方開發的工具，這就需要一個標準化的溝通方式。
+-->
 
 ---
 
 # 為什麼需要 MCP？
 
-<div class="grid grid-cols-3 gap-4">
-<div class="text-center">
+<img src="/mcp-architecture.webp" class="h-80 mt--5 mx-auto" />
 
-## 🔐 安全性
-統一的權限管理和安全控制
+<!--
+為了讓不同的 AI 能夠使用不同的工具，甚至能夠使用第三方開發的工具，這就需要一個標準化的溝通方式，這就是 MCP (Model Context Protocol) 的目的。
+
+透過 MCP 規範開發的工具，任何遵循相同協議的系統都能夠使用。
+-->
+
+---
+
+# MCP 定義
+
+## Model Context Protocol
+
+<div class="text-xl leading-relaxed">
+
+**MCP** 是一種標準化協議，定義了：
+
+- AI Client 如何與 Tool Server 進行溝通
+- AI 如何使用工具的標準方式
+- 跨平台工具共享的統一介面
 
 </div>
-<div class="text-center">
 
-## 🔌 標準化
-一致的協定和資料格式
+---
+layout: two-cols
+---
+
+# Client-Server 架構
+
+MCP 採用 Client-Server 架構：
+
+## 三個主要角色
+
+- **MCP Host**
+  AI 應用程式（Cursor、Claude Desktop）
+
+- **MCP Client**
+  連接 Server 並管理 Context
+
+- **MCP Server**
+  提供具體工具或功能
+
+::right::
+
+<img src="/mcp-client-server-architecture.webp" class="h-100" />
+
+<!--
+一個 Host 可能有多個 Client。Server 提供具體的工具或功能，能提供給 AI 使用，例如網路搜尋、資料庫存取等功能。
+-->
+
+---
+
+# MCP 的價值
+## 開發效率大幅提升
+
+以開發 **GitHub Agent** 為例
+
+---
+
+# 使用 MCP 之前
+
+<img src="/before-mcp-development.webp" class="h-100 mx-auto" />
+
+<!--
+在沒有 MCP 的情況下，你需要逐一實作 GitHub 的各項功能（Push、Pull、Issue 管理等）。
+-->
+
+---
+
+# 使用 MCP 之後
+
+<div class="grid grid-cols-2 gap-4">
+
+<img src="/after-mcp-development-1.webp" class="h-90" />
+
+<img src="/after-mcp-development-2.webp" class="h-90" />
 
 </div>
-<div class="text-center">
 
-## 🚀 可擴展性
-輕鬆添加新的工具和服務
+<!--
+但如果服務商提供 MCP 工具，你可以直接透過 MCP 協議使用這些現成的工具，大幅減少開發與維護的負擔。
+-->
 
-</div>
+---
+
+# MCP Flow
+## 完整的互動流程
+
+<div class="text-lg">
+
+1. **Client 與 Server 建立連接**
+2. **Server** 向 Client 提供可用的**工具清單**
+3. **Client** 將工具清單提供給 **LLM**
+4. **LLM** 根據任務需求選擇適當的工具，告訴 Client
+5. **Client** 告訴 Server 要執行哪個工具，還有其參數
+6. **Server** 執行指定的工具
+7. 將執行結果回傳給 **LLM**，LLM 基於結果做出結論或進行下一輪循環
+
 </div>
 
 ---
 
-# MCP 架構
+# MCP Transports
+## 多種傳輸方式
 
-<img src="/ai-agent-in-loop.webp" class="w-100 mx-auto" />
-
----
-
-# MCP 組件
-
-<div class="grid grid-cols-2 gap-8">
-<div>
-
-## MCP Client
-- 通常是 AI 應用程式
-- 發送請求給 MCP Server
-- 處理回應資料
-
-</div>
-<div>
-
-## MCP Server
-- 提供工具和資源
-- 處理客戶端請求
-- 執行實際操作
-
-</div>
-</div>
+支援不同的部署場景
 
 ---
 
-# MCP 支援的功能
+# STDIO Transport
+## 本地通訊方式
 
-<div class="grid grid-cols-2 gap-8">
+<div class="grid grid-cols-1 gap-6">
+
 <div>
 
-## Resources 資源
-- 檔案系統存取
-- 資料庫查詢
-- API 呼叫
-- 即時資料流
+**特點：**
+- 使用 **subprocess** 在本地執行 MCP Server
+- 在同一台機器上 Client 與 Server 通訊
+- 支援**雙向通訊**
 
 </div>
-<div>
 
-## Tools 工具
-- 程式碼執行
-- 檔案操作
-- 網路請求
-- 自定義功能
+<img src="/mcp-stdio-transport.webp" class="h-60 mx-auto" />
 
-</div>
 </div>
 
 ---
 
-# MCP 實作範例
+# HTTP Transport
+## 遠端通訊方式
 
-## 檔案系統 MCP Server
+標準 HTTP 的限制：
+- 無法讓 Server 主動向 Client 發起請求
+- Server 端的通知或 Log 功能會受到限制
 
-```python
+**解決方案：** 使用 Streamable HTTP
+
+---
+
+# Streamable HTTP (SSE)
+
+<div class="grid grid-cols-1 gap-4">
+
+<div>
+
+**設定：** `stateless_http=False`, `json_response=False`
+
+**特點：**
+- Client 與 Server 初始化後，透過 **Server-Sent Events (SSE)** 建立持久連接
+- 支援 Server **主動向 Client 發送通知**
+
+</div>
+
+<img src="/mcp-streamable-http.webp" class="h-60 mx-auto" />
+
+</div>
+
+---
+
+# Stateless HTTP
+
+<div class="grid grid-cols-1 gap-4">
+
+<div>
+
+**設定：** `stateless_http=True`
+
+**適用場景：** 需要 **load balancer** 的環境
+
+**缺點：** 無法支援 Server 主動通知功能
+
+需要在**可擴展性**與**功能性**之間做出取捨
+
+</div>
+
+<img src="/mcp-stateless-http.webp" class="h-60 mx-auto" />
+
+</div>
+
+---
+layout: two-cols
+---
+
+# MCP Example
+## Client 端實作
+
+```python {all|1-2|4-5|7-9}
+from mcp.client import MCPClient
+
+# 透過 subprocess 建立 MCPClient
+client = MCPClient(command=["python", "server.py"])
+
+# use tool
+result = client.call_tool("add", {"a": 3, "b": 4})
+
+print("3 + 4 =", result)
+```
+
+::right::
+
+## Server 端實作
+
+```python {all|1|3-4|6-9|11-12}
 from mcp.server.fastmcp import FastMCP
-import os
 
-mcp = FastMCP("filesystem-server")
-
-@mcp.tool()
-def read_file(path: str) -> str:
-    """讀取檔案內容"""
-    with open(path, 'r', encoding='utf-8') as f:
-        return f.read()
+# 建立 MCP Server
+mcp = FastMCP(name="AdditionServer")
 
 @mcp.tool()
-def list_directory(path: str) -> list:
-    """列出目錄內容"""
-    return os.listdir(path)
+def add(a: int, b: int) -> int:
+    """加法工具：回傳 a + b 的結果"""
+    return a + b
+
+if __name__ == "__main__":
+    mcp.run(transport="stdio")
 ```
-
----
-
-# 使用 MCP
-
-## 1. 安裝 MCP Server
-```bash
-pip install mcp-server-filesystem
-```
-
-## 2. 設定 Claude Desktop
-```json
-{
-  "mcpServers": {
-    "filesystem": {
-      "command": "mcp-server-filesystem",
-      "args": ["/path/to/allowed/directory"]
-    }
-  }
-}
-```
-
----
-
-# MCP 的優勢
-
-<div class="grid grid-cols-2 gap-8">
-<div>
-
-## 開發者角度
-- 減少重複整合工作
-- 標準化的開發流程
-- 豐富的生態系統
-- 活躍的社群支持
-
-</div>
-<div>
-
-## 使用者角度
-- 更安全的 AI 交互
-- 一致的使用體驗
-- 豐富的功能擴展
-- 透明的操作過程
-
-</div>
-</div>
-
----
-
-# 實際應用場景
-
-<div class="grid grid-cols-3 gap-4">
-<div class="text-center">
-
-## 📁 檔案管理
-讀寫本地檔案、搜尋內容
-
-</div>
-<div class="text-center">
-
-## 🌐 網路存取
-API 呼叫、網頁抓取
-
-</div>
-<div class="text-center">
-
-## 💾 資料庫
-查詢、更新資料庫記錄
-
-</div>
-</div>
-
-<div class="grid grid-cols-3 gap-4 mt-8">
-<div class="text-center">
-
-## 🔧 開發工具
-程式碼執行、測試運行
-
-</div>
-<div class="text-center">
-
-## 📊 資料分析
-圖表生成、統計計算
-
-</div>
-<div class="text-center">
-
-## 🤖 自動化
-工作流程、任務調度
-
-</div>
-</div>
 
 ---
 
 # 總結
 
-## MCP 的價值
-- 標準化 AI 工具整合
-- 提升安全性和可維護性
-- 促進 AI 生態系統發展
-- 降低開發門檻
+<div class="grid grid-cols-1 gap-8 text-xl">
 
-## 未來展望
-- 更多工具和服務支援
-- 企業級解決方案
-- 跨平台相容性
-- 社群驅動創新
+<div>
 
----
+## MCP 的核心價值
 
-# Q&A
+- 🔧 **標準化工具協議** - 統一的 AI 工具使用方式
+- 🚀 **提升開發效率** - 重複使用現有工具，無需重新開發
+- 🌐 **跨平台支援** - 支援多種傳輸方式與部署場景
+- 🔄 **生態系統** - 促進 AI 工具的共享與發展
 
-感謝聆聽！
+</div>
 
-<div class="text-center mt-16">
-<div class="text-2xl">🤔 有問題嗎？</div>
 </div>
 
 ---
+
+# 參考資料
+
+<div class="grid grid-cols-1 gap-4 text-lg">
+
+- [Anthropic MCP 介紹課程](https://anthropic.skilljar.com/introduction-to-model-context-protocol/)
+- [MCP 官方文件 - 入門指南](https://modelcontextprotocol.io/docs/getting-started/intro)
+- [MCP 官方文件 - Server 快速開始](https://modelcontextprotocol.io/quickstart/server)
+- [ihower MCP 簡報](https://ihower.tw/presentation/ihower-MCP-2025-05-23.pdf)
+
+</div>
+
+<div class="pt-8 text-center">
+<span class="text-2xl">謝謝聆聽！</span>
+</div>
