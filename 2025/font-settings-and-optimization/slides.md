@@ -6,6 +6,7 @@ transition: slide-left
 colorSchema: light
 routerMode: hash
 layout: section
+mdc: true
 fonts:
   sans: "LINESeedTW, Noto Sans TC, Robot"
   serif: Roboto Slab
@@ -266,3 +267,24 @@ body {
 ### 有 preload
 
 <img src="/download-fonts-same-time.png" class="m-auto" />
+
+---
+layout: iframe-right
+transition: fade
+url: https://www.caniemail.com/features/css-at-font-face/
+---
+
+# Email Font
+多數 email client 會阻擋外部資源，例如 font 或 script
+
+- 使用樣式接近的 Web safe font (OS 自帶的字型) 作為備用字型。
+---
+layout: iframe-right
+url: https://www.cssfontstack.com/
+---
+
+# Email Font
+多數 email client 會阻擋外部資源，例如 font 或 script
+
+- 使用樣式接近的 Web safe font (OS 自帶的字型) 作為備用字型。
+- [cssfontstack.com](https://www.cssfontstack.com/)：不同 OS 的 Web safe font 支援狀況
