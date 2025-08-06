@@ -22,12 +22,9 @@ fonts:
 
 標準化的 AI 工具協議
 
-
 ---
 
 # AI Agent 是什麼？
-
-<br/>
 
 **AI Agent** = LLM + 工具 + 自主決策
 
@@ -35,19 +32,13 @@ fonts:
 - LLM 會根據當前狀態**自主決定**流程與使用的工具
 - **持續循環**直到完成任務
 
+<img src="/mcp-architecture.webp" class="h-80 mt--5 mx-auto" />
 
 <!--
 這邊引用 Anthropic 的定義：LLM 會根據當前狀態自主決定流程與使用的工具，持續循環直到完成任務，這樣的系統稱為 Agent。
 
 為了讓不同的 AI 能夠使用不同的工具，甚至能夠使用第三方開發的工具，這就需要一個標準化的溝通方式。
 -->
-
----
-
-# 為什麼需要 MCP？
-
-<img src="/mcp-architecture.webp" class="h-80 mt--5 mx-auto" />
-
 <!--
 為了讓不同的 AI 能夠使用不同的工具，甚至能夠使用第三方開發的工具，這就需要一個標準化的溝通方式，這就是 MCP (Model Context Protocol) 的目的。
 
@@ -56,19 +47,19 @@ fonts:
 
 ---
 
-# MCP 定義
+# Introducing MCP
 
-## Model Context Protocol
 
 <div class="text-xl leading-relaxed">
 
-**MCP** 是一種標準化協議，定義了：
+**MCP(Model Context Protocol)** 是一種標準化協議，定義了：
 
-- AI Client 如何與 Tool Server 進行溝通
 - AI 如何使用工具的標準方式
-- 跨平台工具共享的統一介面
+- AI Client 如何與 Tool Server 進行溝通
 
 </div>
+
+<!-- MCP 是一種標準化協議，定義了 AI 如何使用工具，或者說 AI Client 如何與 Tool Server 進行溝通。 -->
 
 ---
 layout: two-cols
@@ -78,53 +69,55 @@ layout: two-cols
 
 MCP 採用 Client-Server 架構：
 
-## 三個主要角色
-
+- **MCP Server**
+  提供給 AI 使用的具體工具或功能
+- **MCP Client**
+  連接 Server 並管理 Context
 - **MCP Host**
   AI 應用程式（Cursor、Claude Desktop）
 
-- **MCP Client**
-  連接 Server 並管理 Context
-
-- **MCP Server**
-  提供具體工具或功能
-
 ::right::
 
-<img src="/mcp-client-server-architecture.webp" class="h-100" />
+<div class="flex justify-center items-center h-full">
+<img src="/mcp-client-server-architecture.webp" />
+</div>
 
 <!--
 一個 Host 可能有多個 Client。Server 提供具體的工具或功能，能提供給 AI 使用，例如網路搜尋、資料庫存取等功能。
 -->
 
 ---
-
-# MCP 的價值
-## 開發效率大幅提升
-
-以開發 **GitHub Agent** 為例
-
+layout: center
+class: "text-center"
 ---
 
+# MCP 的目的：重複使用現有工具
+
+### 以開發 **GitHub Agent** 為例
+
+---
+layout: two-cols
+---
 # 使用 MCP 之前
 
-<img src="/before-mcp-development.webp" class="h-100 mx-auto" />
+::right::
+<img src="/before-mcp-development.webp" class="h-full mx-auto" />
 
 <!--
 在沒有 MCP 的情況下，你需要逐一實作 GitHub 的各項功能（Push、Pull、Issue 管理等）。
 -->
 
 ---
+class: "h1-mb-0"
+---
 
 # 使用 MCP 之後
 
-<div class="grid grid-cols-2 gap-4">
-
-<img src="/after-mcp-development-1.webp" class="h-90" />
-
-<img src="/after-mcp-development-2.webp" class="h-90" />
-
+<div class="flex h-full justify-center items-center gap-16 mt--4">
+  <img src="/after-mcp-development-1.webp" class="h-full" />
+  <img src="/after-mcp-development-2.webp" class="h-full" />
 </div>
+
 
 <!--
 但如果服務商提供 MCP 工具，你可以直接透過 MCP 協議使用這些現成的工具，大幅減少開發與維護的負擔。
@@ -133,9 +126,6 @@ MCP 採用 Client-Server 架構：
 ---
 
 # MCP Flow
-## 完整的互動流程
-
-<div class="text-lg">
 
 1. **Client 與 Server 建立連接**
 2. **Server** 向 Client 提供可用的**工具清單**
@@ -145,7 +135,7 @@ MCP 採用 Client-Server 架構：
 6. **Server** 執行指定的工具
 7. 將執行結果回傳給 **LLM**，LLM 基於結果做出結論或進行下一輪循環
 
-</div>
+<img src="/mcp-flow.webp" class="h-full mx-auto" />
 
 ---
 

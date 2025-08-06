@@ -3,6 +3,23 @@
 .slidev-layout.section h1 {
   font-weight: 900;
 }
+.slidev-layout.two-columns {
+  display: flex;
+}
 .slidev-page {
   height: 100%;
+}
+
+.slidev-layout h1 {
+  margin-bottom: 3rem;
+}
+
+/* 使用 class: "h1-mb-0" 時，將 h1 的 margin-bottom 還原為預設的 1rem */
+.slidev-layout.h1-mb-0 h1 {
+  margin-bottom: 1rem;
+}
+
+ol li {
+  list-style-type: decimal;
+  list-style-position: outside;
 }
