@@ -92,7 +92,35 @@ fonts:
 ```
 
 ### Layout Techniques
-- **Two-column layout**: Use `layout: two-cols` with `::right::` separator
+
+#### Two-Column Layout
+Use `layout: two-cols` for two-column content. For image placement on the right:
+
+```markdown
+---
+layout: two-cols
+---
+left content...
+::right::
+<div class="flex items-center h-full">
+  <img src="/image-path"/>
+</div>
+```
+
+For non-image content, use grid layout instead:
+
+```markdown
+<div class="grid grid-cols-2 gap-2">
+   <div>
+      left content
+   </div>
+   <div>
+      right content
+   </div>
+</div>
+```
+
+#### Other Common Layouts
 - **Center layout**: Use `layout: center` for centered content
 - **Section layout**: Use `layout: section` for title slides
 
@@ -101,6 +129,13 @@ fonts:
 - **Image sizing**: Use Tailwind classes like `class="h-80 mx-auto"`, `class="h-100"`
 - **Grid layouts**: Use `<div class="grid grid-cols-2 gap-4">` for multi-column content
 - **Text styling**: Use `<div class="text-xl leading-relaxed">` for better typography
+
+### Icons
+直接使用以下 tag 就會顯示 icon，以下是常用的 Icon:
+- 警告: `<line-md-alert-square-loop />`
+
+### Images
+- **Format conversion**: Use `npx cwebp-bin input.png -q 80 -o output.webp` to convert images to WebP format
 
 ### Custom Components
 - **Footnote system**: Use `<Footnotes>` and `<Footnote>` components for references
@@ -115,11 +150,6 @@ fonts:
 ### Speaker Notes
 - Use HTML comments `<!-- notes -->` for presenter notes
 - Notes are visible in presenter mode but hidden in slides
-
-### Image Best Practices
-- Use WebP format for better compression (`image.webp`)
-- Reference images from `public/` folder with absolute paths (`/image.webp`)
-- Apply responsive sizing with Tailwind classes
 
 ### Progressive Code Revealing
 ```markdown

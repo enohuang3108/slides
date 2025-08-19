@@ -3,6 +3,48 @@
 .slidev-layout.section h1 {
   font-weight: 900;
 }
+.slidev-layout.two-columns {
+  display: flex;
+}
 .slidev-page {
   height: 100%;
+}
+
+.slidev-layout h1 {
+  margin-bottom: 3rem;
+}
+
+/* 使用 class: "h1-mb-0" 時，將 h1 的 margin-bottom 還原為預設的 1rem */
+.slidev-layout.h1-mb-0 h1 {
+  margin-bottom: 1rem;
+}
+
+/* 调整數字清單維等寬並對齊 */
+ol li {
+  list-style-type: decimal;
+  list-style-position: outside;
+  left: .7em;
+  position: relative;
+}
+
+.slidev-layout li {
+  padding-left: 0;
+}
+
+ol li::marker {
+  font-family: Fira Code;
+}
+
+/* transition only fade-in */
+.fade-in-enter-active {
+  transition: opacity 1s ease;
+}
+.fade-in-enter-from {
+  opacity: 0;
+}
+.fade-in-leave-active {
+  transition: none;
+}
+.fade-in-leave-to {
+  opacity: 0;
 }
