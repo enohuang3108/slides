@@ -7,7 +7,7 @@ info: |
 
   了解 AI Agent 如何透過標準化協議與工具互動
 lineNumbers: true
-transition: slide-left
+transition: fade-in
 colorSchema: light
 routerMode: hash
 layout: section
@@ -78,8 +78,8 @@ MCP 採用 Client-Server 架構：
 
 ::right::
 
-<div class="flex justify-center items-center h-full">
-<img src="/mcp-client-server-architecture.webp" />
+<div class="flex items-center h-full">
+  <img src="/mcp-client-server-architecture.webp" />
 </div>
 
 <!--
@@ -127,6 +127,9 @@ class: "h1-mb-0"
 
 # MCP Flow
 
+<img src="/mcp-flow.webp" class="h-full mx-auto" />
+
+<!--
 1. **Client 與 Server 建立連接**
 2. **Server** 向 Client 提供可用的**工具清單**
 3. **Client** 將工具清單提供給 **LLM**
@@ -134,34 +137,35 @@ class: "h1-mb-0"
 5. **Client** 告訴 Server 要執行哪個工具，還有其參數
 6. **Server** 執行指定的工具
 7. 將執行結果回傳給 **LLM**，LLM 基於結果做出結論或進行下一輪循環
+-->
 
-<img src="/mcp-flow.webp" class="h-full mx-auto" />
 
 ---
 
 # MCP Transports
-## 多種傳輸方式
+## 支援本地/遠端傳輸方式
+<br/>
 
-支援不同的部署場景
+1. STDIO Transport
+2. HTTP Transport
 
+---
+layout: two-cols
 ---
 
 # STDIO Transport
 ## 本地通訊方式
 
-<div class="grid grid-cols-1 gap-6">
+<br/>
 
-<div>
-
-**特點：**
 - 使用 **subprocess** 在本地執行 MCP Server
 - 在同一台機器上 Client 與 Server 通訊
 - 支援**雙向通訊**
 
-</div>
+::right::
 
-<img src="/mcp-stdio-transport.webp" class="h-60 mx-auto" />
-
+<div class="flex items-center h-full">
+  <img src="/mcp-stdio-transport.webp"/>
 </div>
 
 ---
@@ -169,62 +173,77 @@ class: "h1-mb-0"
 # HTTP Transport
 ## 遠端通訊方式
 
-標準 HTTP 的限制：
+<br/>
+
+1. Stateless HTTP
+2. SSE
+
+<br/>
+<br/>
+<br/>
+
+<line-md-alert-square-loop /> 標準 HTTP 的限制：
 - 無法讓 Server 主動向 Client 發起請求
 - Server 端的通知或 Log 功能會受到限制
 
-**解決方案：** 使用 Streamable HTTP
+**解決方法：** 使用 Streamable HTTP
 
+---
+layout: two-cols
 ---
 
 # Streamable HTTP (SSE)
 
-<div class="grid grid-cols-1 gap-4">
 
-<div>
-
-**設定：** `stateless_http=False`, `json_response=False`
-
-**特點：**
 - Client 與 Server 初始化後，透過 **Server-Sent Events (SSE)** 建立持久連接
 - 支援 Server **主動向 Client 發送通知**
 
-</div>
+**設定：** `stateless_http=False`, `json_response=False`
 
-<img src="/mcp-streamable-http.webp" class="h-60 mx-auto" />
+::right::
 
-</div>
-
----
-
-# Stateless HTTP
-
-<div class="grid grid-cols-1 gap-4">
-
-<div>
-
-**設定：** `stateless_http=True`
-
-**適用場景：** 需要 **load balancer** 的環境
-
-**缺點：** 無法支援 Server 主動通知功能
-
-需要在**可擴展性**與**功能性**之間做出取捨
-
-</div>
-
-<img src="/mcp-stateless-http.webp" class="h-60 mx-auto" />
-
+<div class="flex flex-col gap-2 items-center h-full">
+  <img src="/mcp-streamable-http.webp"/>
+  <img src="/mcp-streamable-http2.webp"/>
 </div>
 
 ---
 layout: two-cols
 ---
 
-# MCP Example
-## Client 端實作
+# Stateless HTTP
 
-```python {all|1-2|4-5|7-9}
+**適用場景：** 需要 **load balancer** 的環境
+
+**缺點：** 無法支援 Server 主動通知功能
+
+需要在**擴展性**與**功能性**之間做出取捨
+
+**設定：** `stateless_http=True`
+
+::right::
+
+<div class="flex items-center h-full">
+  <img src="/mcp-stateless-http.webp"/>
+</div>
+
+<!--
+為什麼 load balancer 時不能用 SSE?
+因為 SSE 時，Client 會發出 GET 建立連接，這時候都還不會有問題，但後續在 Call Tool 時會發出 POST 請求，
+這個時候如果有 load balancer，可能會導致請求被分配到不同的 Server 上，造成狀態不一致。
+-->
+
+---
+
+# MCP Example
+
+<div class="grid grid-cols-2 gap-2">
+
+<div>
+
+## Client：
+
+```python
 from mcp.client import MCPClient
 
 # 透過 subprocess 建立 MCPClient
@@ -235,12 +254,13 @@ result = client.call_tool("add", {"a": 3, "b": 4})
 
 print("3 + 4 =", result)
 ```
+</div>
 
-::right::
+<div>
 
-## Server 端實作
+## Server：
 
-```python {all|1|3-4|6-9|11-12}
+```python
 from mcp.server.fastmcp import FastMCP
 
 # 建立 MCP Server
@@ -254,39 +274,62 @@ def add(a: int, b: int) -> int:
 if __name__ == "__main__":
     mcp.run(transport="stdio")
 ```
-
----
-
-# 總結
-
-<div class="grid grid-cols-1 gap-8 text-xl">
-
-<div>
-
-## MCP 的核心價值
-
-- 🔧 **標準化工具協議** - 統一的 AI 工具使用方式
-- 🚀 **提升開發效率** - 重複使用現有工具，無需重新開發
-- 🌐 **跨平台支援** - 支援多種傳輸方式與部署場景
-- 🔄 **生態系統** - 促進 AI 工具的共享與發展
-
+</div>
 </div>
 
+---
+layout: two-cols
+---
+
+# 好用的 MCP Server
+
+- context7
+### Before
+1. 無法獲得最新的 Document
+2. 可能出現幻覺
+
+<Footnotes x='l'>
+  <Footnote>
+    <a href="https://github.com/upstash/context7" rel="noreferrer" target="_blank">
+      Context7
+    </a>
+  </Footnote>
+</Footnotes>
+
+::right::
+
+<div class="flex items-center h-full">
+  <img src="/before-context7.webp"/>
+</div>
+
+---
+layout: two-cols
+---
+
+# 好用的 MCP Server
+- context7
+### After
+1. 搜尋最新的 Document
+2. 提供原始範例
+
+<Footnotes x='l'>
+  <Footnote>
+    <a href="https://github.com/upstash/context7" rel="noreferrer" target="_blank">
+      Context7
+    </a>
+  </Footnote>
+</Footnotes>
+
+::right::
+
+<div class="flex items-center h-full">
+  <img src="/after-context7.webp"/>
 </div>
 
 ---
 
 # 參考資料
-
-<div class="grid grid-cols-1 gap-4 text-lg">
-
 - [Anthropic MCP 介紹課程](https://anthropic.skilljar.com/introduction-to-model-context-protocol/)
 - [MCP 官方文件 - 入門指南](https://modelcontextprotocol.io/docs/getting-started/intro)
 - [MCP 官方文件 - Server 快速開始](https://modelcontextprotocol.io/quickstart/server)
-- [ihower MCP 簡報](https://ihower.tw/presentation/ihower-MCP-2025-05-23.pdf)
-
-</div>
-
-<div class="pt-8 text-center">
-<span class="text-2xl">謝謝聆聽！</span>
-</div>
+- [ihower MCP](https://ihower.tw/presentation/ihower-MCP-2025-05-23.pdf)
