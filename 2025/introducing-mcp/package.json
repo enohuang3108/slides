@@ -2,8 +2,8 @@
   "type": "module",
   "scripts": {
     "dev": "slidev --open",
-    "build": "slidev build --base /slides/2025/mcp-intro/ --out ../../dist/2025/mcp-intro",
-    "export": "slidev export --per-slide --output demo-basic.pdf",
+    "build": "slidev build --base /slides/2025/introducing-mcp/ --out ../../dist/2025/introducing-mcp",
+    "export": "slidev export --output introducing-mcp.pdf",
     "preview": "vite preview"
   }
 }
