@@ -3,7 +3,9 @@
   "packageManager": "pnpm@8.15.0",
   "scripts": {
     "dev": "esno scripts/picker.ts dev --open",
-    "build": "pnpm -r build",
+    "build:all": "pnpm -r build",
+    "build": "esno scripts/picker.ts build",
+    "export": "esno scripts/picker.ts export",
     "lint": "pnpm -r run lint",
     "preview": "pnpm -r run preview"
   },
